@@ -21,11 +21,27 @@ function App() {
   const gallerySpin = (sign) => {
     const spinner = document.querySelector('#spinner')
     if (!sign) {
-      setAngle(value => value + 45)
+      setAngle(value => value + 360/cars.length)
+      console.log(360/cars.length)
     } else {
-      setAngle(value => value - 45)
+      setAngle(value => value - 360/cars.length)
+      console.log(360/cars.length)
     }
     spinner.setAttribute('style',`-webkit-transform: rotateY(${angle}deg); transform: rotateY(${angle}deg)`)
+  }
+
+  const figureStyle = (degree) =>  {
+    //console.log("los elementos "+degree)
+    return {
+      width: '50%',
+      //height: '256px',
+      position: 'absolute',
+      objectFit: 'cover',
+      left: '30%',
+      transformOrigin: '50% 50% -512px',
+      outline: '1px solid transparent',
+      transform: `rotateY(${degree}deg)`
+    }
   }
 
 
@@ -68,15 +84,17 @@ function App() {
           <div id='gallery'>
           <figure id='spinner'>
             {
-              cars.map((x, index) => (
-                <img key={x.id} src={x.image}  alt={x.title}
-                     style={{transform: `${360/index}`}} />
-              ))
+              cars.map((x, index, array) => {
+                console.log(360/(array.length * (index + 1)))
+                return (
+                  <img key={x.id} src={x.image}  alt={x.title} style={ figureStyle((360/(array.length) * (index + 1))) } />
+                )
+              })
             }
           </figure>
             <div style={{marginTop: '120px'}}>
-              <a className='btn btn-primary' href="#" style={{float: 'left'}} onClick={() => gallerySpin('-')}>◀</a>
-              <a className='btn btn-primary' href="#" style={{float: 'right'}} onClick={() => gallerySpin('')}>▶</a>
+              <a className='btn btn-primary' style={{float: 'left'}} onClick={() => gallerySpin('-')}>◀</a>
+              <a className='btn btn-primary' style={{float: 'right'}} onClick={() => gallerySpin('')}>▶</a>
             </div>
           </div>
         </div>
